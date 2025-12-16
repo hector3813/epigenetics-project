@@ -1,9 +1,9 @@
-// Scroll to body map function
+// Scroll to body map
 function scrollToBody() {
     document.getElementById('body-map').scrollIntoView({ behavior: 'smooth' });
 }
 
-// Body part click navigation
+// Body part navigation
 document.addEventListener('DOMContentLoaded', function() {
     const bodyParts = document.querySelectorAll('.body-part');
     const sectionNav = document.getElementById('section-nav');
@@ -13,19 +13,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const sectionId = this.getAttribute('data-section');
             const section = document.getElementById(sectionId);
             
-            // Show navigation after first click
-            if (sectionNav) {
-                sectionNav.style.display = 'flex';
-            }
-            
-            // Scroll to section
-            if (section) {
-                section.scrollIntoView({ behavior: 'smooth' });
-            }
+            if (sectionNav) sectionNav.style.display = 'flex';
+            if (section) section.scrollIntoView({ behavior: 'smooth' });
         });
     });
     
-    // Initialize all interactive sections
+    // Initialize all sections
     initBrainStress();
     initMetabolism();
     initImmune();
@@ -33,376 +26,285 @@ document.addEventListener('DOMContentLoaded', function() {
     initAging();
 });
 
-// ===== BRAIN & STRESS SECTION (UPDATED) =====
+// ===== BRAIN SECTION (FIXED) =====
 function initBrainStress() {
     const sleepSlider = document.getElementById('sleep');
     const sleepValue = document.getElementById('sleep-value');
     const stressSlider = document.getElementById('stress-level');
     const stressValue = document.getElementById('stress-value');
-    const mindSlider = document.getElementById('mindfulness'); // NEW
-    const mindValue = document.getElementById('mindfulness-value'); // NEW
+    const mindSlider = document.getElementById('mindfulness');
+    const mindValue = document.getElementById('mindfulness-value');
+    
     const stressMeter = document.getElementById('stress-meter');
     const stressResult = document.getElementById('stress-result');
     
-    if (!sleepSlider || !stressSlider) return;
+    // Safety check
+    if (!sleepSlider || !stressSlider || !mindSlider) return;
     
     function updateStress() {
-        const sleep = parseFloat(sleepSlider.value);
-        const stressLevel = parseInt(stressSlider.value);
-        const mindfulness = parseInt(mindSlider.value); // NEW
+        const sleep = parseFloat(sleepSlider.value); // 0-10
+        const stressLevel = parseInt(stressSlider.value); // 0-100
+        const mindfulness = parseInt(mindSlider.value); // 0-60
         
-        // Calculate combined stress impact
-        // Good sleep reduces stress impact, poor sleep amplifies it
-        const sleepFactor = (10 - sleep) / 10; // 0-1, higher = worse sleep
-        
-        // NEW Logic: Mindfulness actively subtracts from the stress score
-        // 30 mins of mindfulness can offset ~20% of stress impact
-        const mindOffset = mindfulness * 0.8; 
-        
-        let combinedStress = (sleepFactor * 50) + (stressLevel * 0.5) - mindOffset;
-        
-        // Clamp result between 0 and 100
-        combinedStress = Math.max(0, Math.min(100, combinedStress));
-        
-        // Update display values
+        // Update the text numbers next to sliders
         sleepValue.textContent = sleep + ' hours';
         stressValue.textContent = stressLevel + '%';
-        mindValue.textContent = mindfulness + ' mins'; // NEW
+        mindValue.textContent = mindfulness + ' mins';
         
-        // Update meter
-        stressMeter.style.width = combinedStress + '%';
+        // --- LOGIC FIX ---
+        // 1. Calculate Base Stress (0-100) based on perceived stress
+        let score = stressLevel; 
         
-        // Update result text and color
-        if (combinedStress < 30) {
-            stressResult.textContent = '✓ Excellent! Low cortisol and mindfulness practices support HPA axis regulation. You are likely reversing stress-induced methylation marks.';
-            stressResult.style.background = '#d4edda';
-            stressResult.style.borderLeftColor = '#4CAF50';
-        } else if (combinedStress < 60) {
-            stressResult.textContent = '⚠ Moderate stress impact. Your stress genes are under pressure. Try increasing sleep or adding 10 mins of mindfulness to lower this score.';
-            stressResult.style.background = '#fff3cd';
-            stressResult.style.borderLeftColor = '#FFC107';
+        // 2. Sleep Impact: Good sleep (>7) reduces stress score significantly
+        if (sleep >= 7) {
+            score -= (sleep - 6) * 5; // e.g. 8 hours subtracts 10 points
         } else {
-            stressResult.textContent = '✗ High stress burden. Chronic elevation is likely demethylating FKBP5, making your stress response harder to turn off. Prioritize recovery.';
-            stressResult.style.background = '#f8d7da';
-            stressResult.style.borderLeftColor = '#F44336';
+            score += (7 - sleep) * 5; // e.g. 5 hours adds 10 points
+        }
+        
+        // 3. Mindfulness Impact (Stronger Effect)
+        // Every 1 minute of mindfulness subtracts 0.8 points of stress
+        // 60 mins = -48 points (huge reduction)
+        const mindReduction = mindfulness * 0.8;
+        score = score - mindReduction;
+        
+        // 4. Clamp score between 0 and 100
+        score = Math.max(0, Math.min(100, score));
+        
+        // Update Meter Width
+        stressMeter.style.width = score + '%';
+        
+        // Update Result Text
+        if (score < 30) {
+            stressResult.textContent = '✓ Excellent! Low cortisol & active mindfulness are protecting your brain. Your stress-response genes are likely well-regulated.';
+            stressResult.style.borderLeftColor = '#10b981'; // Green
+            stressResult.style.background = '#ecfdf5';
+        } else if (score < 60) {
+            stressResult.textContent = '⚠ Moderate stress load. Your FKBP5 gene is working hard. Try adding 10 more minutes of mindfulness to drop this score.';
+            stressResult.style.borderLeftColor = '#f59e0b'; // Yellow
+            stressResult.style.background = '#fffbeb';
+        } else {
+            stressResult.textContent = '✗ High Allostatic Load. Chronic stress is likely altering your neural plasticity. Prioritize sleep and meditation immediately.';
+            stressResult.style.borderLeftColor = '#ef4444'; // Red
+            stressResult.style.background = '#fef2f2';
         }
     }
     
+    // Listen for changes
     sleepSlider.addEventListener('input', updateStress);
     stressSlider.addEventListener('input', updateStress);
-    mindSlider.addEventListener('input', updateStress); // NEW
+    mindSlider.addEventListener('input', updateStress);
     
+    // Run once on load
     updateStress();
 }
 
-// ===== METABOLISM SECTION (UPDATED) =====
+// ===== METABOLISM SECTION =====
 function initMetabolism() {
     const exerciseSlider = document.getElementById('exercise');
-    const exerciseValue = document.getElementById('exercise-value');
     const dietSlider = document.getElementById('diet');
-    const dietValue = document.getElementById('diet-value');
-    const circadianSelect = document.getElementById('circadian'); // NEW
+    const circadianSelect = document.getElementById('circadian');
     const metabolismNeedle = document.getElementById('metabolism-needle');
     const metabolismResult = document.getElementById('metabolism-result');
     
-    if (!exerciseSlider || !dietSlider) return;
+    // Update value displays
+    const exerciseValue = document.getElementById('exercise-value');
+    const dietValue = document.getElementById('diet-value');
+    
+    if (!exerciseSlider) return;
     
     function updateMetabolism() {
         const exercise = parseInt(exerciseSlider.value);
         const diet = parseInt(dietSlider.value);
-        const schedule = circadianSelect.value; // NEW
+        const schedule = circadianSelect.value;
         
-        // Calculate metabolic health score (0-100)
-        let exerciseScore = (exercise / 14) * 50; 
-        let dietScore = (diet / 100) * 50; 
-        let totalScore = exerciseScore + dietScore;
-        
-        // NEW Logic: Penalize for poor circadian rhythm
-        if (schedule === 'irregular') {
-            totalScore -= 15; // Penalty for late eating
-        } else if (schedule === 'shift') {
-            totalScore -= 30; // Heavy penalty for shift work
-        }
-        
-        // Clamp score
-        totalScore = Math.max(0, Math.min(100, totalScore));
-
-        // Update display values
         exerciseValue.textContent = exercise + ' hours';
         dietValue.textContent = diet + '%';
         
-        // Update needle rotation
-        const rotation = (totalScore / 100) * 180 - 90;
+        let score = ((exercise / 14) * 50) + ((diet / 100) * 50);
+        
+        // Circadian Penalties
+        if (schedule === 'irregular') score -= 15;
+        if (schedule === 'shift') score -= 30;
+        
+        score = Math.max(0, Math.min(100, score));
+        
+        // Rotate Needle (-90 to 90 deg)
+        const rotation = (score / 100) * 180 - 90;
         metabolismNeedle.style.transform = `translateX(-50%) rotate(${rotation}deg)`;
         
-        // Update result text
-        if (totalScore < 30) {
-            metabolismResult.textContent = '⚠ Poor metabolic profile. Circadian disruption or low activity is likely silencing protective genes like PPARGC1A.';
-            metabolismResult.style.background = '#f8d7da';
-            metabolismResult.style.borderLeftColor = '#F44336';
-        } else if (totalScore < 60) {
-            metabolismResult.textContent = '→ Moderate metabolic health. Improve your eating schedule or exercise consistency to optimize gene expression.';
-            metabolismResult.style.background = '#fff3cd';
-            metabolismResult.style.borderLeftColor = '#FFC107';
+        if (score < 40) {
+            metabolismResult.textContent = '⚠ Poor metabolic signaling. Circadian mismatch and low activity may be silencing protective genes.';
+            metabolismResult.style.borderLeftColor = '#ef4444';
+        } else if (score < 75) {
+            metabolismResult.textContent = '→ Moderate health. Improve consistency in diet or timing to optimize your metabolic clock.';
+            metabolismResult.style.borderLeftColor = '#f59e0b';
         } else {
-            metabolismResult.textContent = '✓ Excellent! Regular activity and circadian sync (daytime eating) promote optimal methylation in metabolic pathways.';
-            metabolismResult.style.background = '#d4edda';
-            metabolismResult.style.borderLeftColor = '#4CAF50';
+            metabolismResult.textContent = '✓ Optimal! Your lifestyle is sending strong signals to mitochondria-building genes.';
+            metabolismResult.style.borderLeftColor = '#10b981';
         }
     }
     
     exerciseSlider.addEventListener('input', updateMetabolism);
     dietSlider.addEventListener('input', updateMetabolism);
-    circadianSelect.addEventListener('change', updateMetabolism); // NEW
+    circadianSelect.addEventListener('change', updateMetabolism);
     
     updateMetabolism();
 }
 
-// ===== IMMUNE & INFLAMMATION SECTION (UPDATED) =====
+// ===== IMMUNE SECTION =====
 function initImmune() {
-    // NEW: Select based on positive/negative classes
-    const negFactors = document.querySelectorAll('.immune-factor-negative');
-    const posFactors = document.querySelectorAll('.immune-factor-positive');
-    const immuneGauge = document.getElementById('immune-gauge');
-    const immuneResult = document.getElementById('immune-result');
+    const factors = document.querySelectorAll('.checkbox-group input');
+    const gaugeFill = document.getElementById('immune-gauge');
+    const result = document.getElementById('immune-result');
     
-    if (negFactors.length === 0) return;
+    if (factors.length === 0) return;
     
     function updateImmune() {
-        let negCount = 0;
-        let posCount = 0;
+        let riskScore = 0;
         
-        negFactors.forEach(factor => {
-            if (factor.checked) negCount++;
+        factors.forEach(input => {
+            if (input.checked) {
+                if (input.classList.contains('immune-factor-negative')) {
+                    riskScore += 1;
+                } else if (input.classList.contains('immune-factor-positive')) {
+                    riskScore -= 1; // Nature protects
+                }
+            }
         });
-
-        posFactors.forEach(factor => {
-            if (factor.checked) posCount++;
-        });
         
-        // Calculate score: Start with negatives, subtract positives (protection)
-        // Max 4 negatives.
-        let riskScore = negCount;
-        if (posCount > 0) riskScore -= 1; // Nature "cancels out" one risk factor
-        
-        // Ensure strictly non-negative for display
+        // Normalize score (0 to 4 scale)
         riskScore = Math.max(0, riskScore);
+        const percent = (riskScore / 4) * 100;
         
-        // 0-4 scale converted to percentage
-        const inflammationPercent = (riskScore / 4) * 100;
+        gaugeFill.style.width = Math.min(100, percent) + '%';
         
-        // Update gauge
-        immuneGauge.style.width = Math.min(100, inflammationPercent) + '%';
-        
-        // Update result text
-        if (riskScore <= 0) {
-            immuneResult.textContent = '✓ Low inflammation. Good environment or protective habits (nature exposure) are keeping your immune set-points regulated.';
-            immuneResult.style.background = '#d4edda';
-            immuneResult.style.borderLeftColor = '#4CAF50';
+        if (riskScore === 0) {
+            result.textContent = '✓ Low inflammation. Your immune set-points are well-regulated.';
+            result.style.borderLeftColor = '#10b981';
         } else if (riskScore <= 2) {
-            immuneResult.textContent = `⚠ Moderate inflammation risk. You have some environmental stressors affecting your histone acetylation.`;
-            immuneResult.style.background = '#fff3cd';
-            immuneResult.style.borderLeftColor = '#FFC107';
+            result.textContent = '⚠ Moderate inflammation risk. Environmental stressors are present.';
+            result.style.borderLeftColor = '#f59e0b';
         } else {
-            immuneResult.textContent = `✗ High inflammation tendency. Multiple stressors are likely increasing baseline inflammatory gene expression (IL-6).`;
-            immuneResult.style.background = '#f8d7da';
-            immuneResult.style.borderLeftColor = '#F44336';
+            result.textContent = '✗ High inflammation tendency. Multiple stressors are likely activating inflammatory genes.';
+            result.style.borderLeftColor = '#ef4444';
         }
     }
     
-    negFactors.forEach(factor => factor.addEventListener('change', updateImmune));
-    posFactors.forEach(factor => factor.addEventListener('change', updateImmune));
-    
+    factors.forEach(f => f.addEventListener('change', updateImmune));
     updateImmune();
 }
 
-// ===== SKIN & HAIR SECTION (UNCHANGED) =====
+// ===== SKIN SECTION =====
 function initSkin() {
-    const uvSelect = document.getElementById('uv');
-    const sleepSelect = document.getElementById('skin-sleep');
-    const currentSkin = document.getElementById('current-skin');
-    const currentAgeSpan = document.querySelector('#current-age span');
-    const skinResult = document.getElementById('skin-result');
+    const uv = document.getElementById('uv');
+    const sleep = document.getElementById('skin-sleep');
+    const skinVisual = document.getElementById('current-skin');
+    const ageSpan = document.querySelector('#current-age span');
+    const result = document.getElementById('skin-result');
     
-    if (!uvSelect || !sleepSelect) return;
+    if (!uv) return;
     
     function updateSkin() {
-        const uv = uvSelect.value;
-        const sleep = sleepSelect.value;
+        let damage = 0;
+        if (uv.value === 'high') damage += 3;
+        if (uv.value === 'moderate') damage += 1.5;
+        if (sleep.value === 'poor') damage += 2;
+        if (sleep.value === 'moderate') damage += 1;
         
-        // Calculate skin aging score
-        let agingScore = 0;
+        // Visual Change (Darker/Redder = older)
+        const hue = 35 - (damage * 5); 
+        const light = 80 - (damage * 6);
+        skinVisual.style.background = `hsl(${hue}, 70%, ${light}%)`;
         
-        // UV damage points
-        if (uv === 'high') agingScore += 3;
-        else if (uv === 'moderate') agingScore += 1.5;
+        // Age Calc
+        const bioAge = 20 + Math.round(damage * 2.5);
+        ageSpan.textContent = bioAge + ' years';
         
-        // Sleep quality points
-        if (sleep === 'poor') agingScore += 2;
-        else if (sleep === 'moderate') agingScore += 1;
-        
-        // Update skin visual
-        const hue = 40 - (agingScore * 5); // Yellower/darker with more damage
-        const saturation = 70 - (agingScore * 8);
-        const lightness = 70 - (agingScore * 5);
-        
-        currentSkin.style.background = `linear-gradient(135deg, 
-            hsl(${hue}, ${saturation}%, ${lightness}%), 
-            hsl(${200 + agingScore * 10}, ${50 - agingScore * 5}%, ${50 - agingScore * 3}%))`;
-        
-        if (agingScore > 3) {
-            currentSkin.style.boxShadow = 'inset 0 0 20px rgba(0,0,0,0.3)';
+        if (damage < 2) {
+            result.textContent = '✓ Skin is protected. DNA methylation in collagen genes is stable.';
+            result.style.borderLeftColor = '#10b981';
         } else {
-            currentSkin.style.boxShadow = 'none';
-        }
-        
-        // Estimate biological skin age (assume user is ~20)
-        const baseAge = 20;
-        const addedYears = Math.round(agingScore * 2);
-        const bioAge = baseAge + addedYears;
-        
-        currentAgeSpan.textContent = bioAge + ' years';
-        
-        // Update result
-        if (agingScore < 2) {
-            skinResult.textContent = '✓ Great skin health! Your habits support healthy DNA methylation in skin barrier and collagen genes. Minimal accelerated aging.';
-            skinResult.style.background = '#d4edda';
-            skinResult.style.borderLeftColor = '#4CAF50';
-        } else if (agingScore < 4) {
-            skinResult.textContent = '⚠ Moderate skin aging factors. Some UV or stress-related epigenetic changes in pigmentation and repair genes.';
-            skinResult.style.background = '#fff3cd';
-            skinResult.style.borderLeftColor = '#FFC107';
-        } else {
-            skinResult.textContent = `✗ High skin aging risk. UV and poor sleep can alter methylation in genes controlling collagen production and melanin synthesis, accelerating visible aging by ~${addedYears} years.`;
-            skinResult.style.background = '#f8d7da';
-            skinResult.style.borderLeftColor = '#F44336';
+            result.textContent = '✗ Accelerated aging detected. UV/Stress is altering skin cell epigenetics.';
+            result.style.borderLeftColor = '#ef4444';
         }
     }
     
-    uvSelect.addEventListener('change', updateSkin);
-    sleepSelect.addEventListener('change', updateSkin);
-    
-    // Initialize
+    uv.addEventListener('change', updateSkin);
+    sleep.addEventListener('change', updateSkin);
     updateSkin();
 }
 
-// ===== BIOLOGICAL AGING SECTION (UNCHANGED) =====
+// ===== AGING SECTION =====
 function initAging() {
-    const chronoAgeInput = document.getElementById('chrono-age');
-    const sleepRegSlider = document.getElementById('sleep-regularity');
-    const sleepRegValue = document.getElementById('sleep-reg-value');
-    const trainingSlider = document.getElementById('training');
-    const trainingValue = document.getElementById('training-value');
-    const stressMgmtSlider = document.getElementById('stress-mgmt');
-    const stressMgmtValue = document.getElementById('stress-mgmt-value');
+    const inputs = document.querySelectorAll('.aging-factor');
+    const chronoInput = document.getElementById('chrono-age');
+    const bioHand = document.getElementById('bio-clock-hand');
+    const chronoHand = document.getElementById('chrono-clock-hand');
+    const bioDisplay = document.getElementById('bio-age-display');
+    const chronoDisplay = document.getElementById('chrono-age-display');
+    const diffDisplay = document.getElementById('age-difference');
+    const result = document.getElementById('aging-result');
     
-    const bioClockHand = document.getElementById('bio-clock-hand');
-    const chronoClockHand = document.getElementById('chrono-clock-hand');
-    const bioAgeDisplay = document.getElementById('bio-age-display');
-    const chronoAgeDisplay = document.getElementById('chrono-age-display');
-    const ageDifference = document.getElementById('age-difference');
-    const agingResult = document.getElementById('aging-result');
+    // Value labels
+    const sVal = document.getElementById('sleep-reg-value');
+    const tVal = document.getElementById('training-value');
+    const mVal = document.getElementById('stress-mgmt-value');
     
-    if (!chronoAgeInput) return;
+    if (!chronoInput) return;
     
     function updateAging() {
-        const chronoAge = parseInt(chronoAgeInput.value);
-        const sleepReg = parseInt(sleepRegSlider.value);
-        const training = parseInt(trainingSlider.value);
-        const stressMgmt = parseInt(stressMgmtSlider.value);
+        const chronoAge = parseInt(chronoInput.value) || 20;
+        const sleep = parseInt(inputs[0].value);
+        const train = parseInt(inputs[1].value);
+        const stress = parseInt(inputs[2].value);
         
-        // Update display values
-        sleepRegValue.textContent = sleepReg + '%';
-        trainingValue.textContent = training + '%';
-        stressMgmtValue.textContent = stressMgmt + '%';
-        chronoAgeDisplay.textContent = chronoAge;
+        // Update labels
+        sVal.textContent = sleep + '%';
+        tVal.textContent = train + '%';
+        mVal.textContent = stress + '%';
         
-        // Calculate lifestyle score (0-100)
-        const lifestyleScore = (sleepReg + training + stressMgmt) / 3;
+        chronoDisplay.textContent = chronoAge;
         
-        // Calculate biological age deviation
-        let ageDelta;
-        if (lifestyleScore > 70) {
-            ageDelta = -((lifestyleScore - 70) / 30) * 5; // Up to -5 years
-        } else if (lifestyleScore < 30) {
-            ageDelta = ((30 - lifestyleScore) / 30) * 8; // Up to +8 years
+        // Calculate Bio Age
+        const avgLifestyle = (sleep + train + stress) / 3;
+        let diff = 0;
+        
+        if (avgLifestyle > 70) diff = -5; // Younger
+        else if (avgLifestyle < 40) diff = +8; // Older
+        else diff = 0; // Same
+        
+        // Scale diff based on how extreme the lifestyle is
+        if (avgLifestyle > 85) diff = -8;
+        if (avgLifestyle < 20) diff = +12;
+        
+        const bioAge = chronoAge + diff;
+        bioDisplay.textContent = bioAge;
+        
+        // Rotate Hands (0-100 age scale)
+        chronoHand.style.transform = `translateX(-50%) rotate(${(chronoAge/100)*360}deg)`;
+        bioHand.style.transform = `translateX(-50%) rotate(${(bioAge/100)*360}deg)`;
+        
+        // Result
+        if (bioAge < chronoAge) {
+            diffDisplay.textContent = `You are aging ${Math.abs(diff)} years slower!`;
+            diffDisplay.style.color = '#10b981';
+            result.textContent = '✓ Your epigenetic clock is ticking slowly. Great job!';
+            result.style.borderLeftColor = '#10b981';
+        } else if (bioAge > chronoAge) {
+            diffDisplay.textContent = `You are aging ${Math.abs(diff)} years faster.`;
+            diffDisplay.style.color = '#ef4444';
+            result.textContent = '✗ Lifestyle factors are accelerating your methylation clock.';
+            result.style.borderLeftColor = '#ef4444';
         } else {
-            ageDelta = ((50 - lifestyleScore) / 20) * 2; // -2 to +2 years
-        }
-        
-        const bioAge = Math.round(chronoAge + ageDelta);
-        bioAgeDisplay.textContent = bioAge;
-        
-        // Update clock hands
-        const maxAge = 100;
-        const chronoRotation = (chronoAge / maxAge) * 360;
-        const bioRotation = (bioAge / maxAge) * 360;
-        
-        chronoClockHand.style.transform = `translateX(-50%) rotate(${chronoRotation}deg)`;
-        bioClockHand.style.transform = `translateX(-50%) rotate(${bioRotation}deg)`;
-        
-        // Update age difference display
-        const diff = bioAge - chronoAge;
-        if (diff > 0) {
-            ageDifference.textContent = `⚠ You're aging ${Math.abs(diff)} year${Math.abs(diff) !== 1 ? 's' : ''} faster than your chronological age`;
-            ageDifference.style.background = '#f8d7da';
-            ageDifference.style.color = '#721c24';
-        } else if (diff < 0) {
-            ageDifference.textContent = `✓ You're aging ${Math.abs(diff)} year${Math.abs(diff) !== 1 ? 's' : ''} slower than your chronological age!`;
-            ageDifference.style.background = '#d4edda';
-            ageDifference.style.color = '#155724';
-        } else {
-            ageDifference.textContent = '→ Your biological age matches your chronological age';
-            ageDifference.style.background = '#fff3cd';
-            ageDifference.style.color = '#856404';
-        }
-        
-        // Update result text
-        if (lifestyleScore > 70) {
-            agingResult.textContent = `✓ Excellent lifestyle! Your consistent healthy habits promote favorable methylation patterns at key CpG sites. Your epigenetic clock is ticking ${Math.abs(diff)} year${Math.abs(diff) !== 1 ? 's' : ''} slower than expected.`;
-            agingResult.style.background = '#d4edda';
-            agingResult.style.borderLeftColor = '#4CAF50';
-        } else if (lifestyleScore > 40) {
-            agingResult.textContent = '→ Moderate lifestyle consistency. Some healthy habits, but inconsistency may prevent optimal epigenetic aging benefits. Room for improvement.';
-            agingResult.style.background = '#fff3cd';
-            agingResult.style.borderLeftColor = '#FFC107';
-        } else {
-            agingResult.textContent = `✗ Poor lifestyle patterns. Inconsistent sleep, low exercise, and high stress can accelerate methylation age by altering patterns at aging-related CpG sites. Your biological age may be ~${Math.abs(diff)} year${Math.abs(diff) !== 1 ? 's' : ''} older.`;
-            agingResult.style.background = '#f8d7da';
-            agingResult.style.borderLeftColor = '#F44336';
+            diffDisplay.textContent = 'Biological age matches Chronological age.';
+            diffDisplay.style.color = '#f59e0b';
+            result.textContent = '→ Average aging rate. Room for improvement.';
+            result.style.borderLeftColor = '#f59e0b';
         }
     }
     
-    chronoAgeInput.addEventListener('input', updateAging);
-    sleepRegSlider.addEventListener('input', updateAging);
-    trainingSlider.addEventListener('input', updateAging);
-    stressMgmtSlider.addEventListener('input', updateAging);
-    
-    // Initialize
+    inputs.forEach(i => i.addEventListener('input', updateAging));
+    chronoInput.addEventListener('input', updateAging);
     updateAging();
 }
-
-// Smooth reveal animations on scroll
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
-
-const observer = new IntersectionObserver(function(entries) {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
-        }
-    });
-}, observerOptions);
-
-document.addEventListener('DOMContentLoaded', function() {
-    const sections = document.querySelectorAll('section');
-    sections.forEach(section => {
-        section.style.opacity = '0';
-        section.style.transform = 'translateY(20px)';
-        section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(section);
-    });
-});
