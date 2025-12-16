@@ -16,265 +16,230 @@
     <section id="body-map" class="landing">
         <h2>Click a body part to explore</h2>
         <div class="body-container">
-            <svg viewBox="0 0 200 400" class="body-svg">
-                <g id="brain-region" class="body-part" data-section="brain">
-                    <circle cx="100" cy="40" r="30" fill="#FFE5E5" stroke="#667eea" stroke-width="2"/>
-                    <text x="100" y="45" text-anchor="middle" font-size="10" fill="#333" font-weight="bold">Brain</text>
-                </g>
-                <g id="metabolism-region" class="body-part" data-section="metabolism">
-                    <ellipse cx="100" cy="150" rx="40" ry="60" fill="#E5F5FF" stroke="#667eea" stroke-width="2"/>
-                    <text x="100" y="155" text-anchor="middle" font-size="10" fill="#333" font-weight="bold">Metabolism</text>
-                </g>
-                <g id="immune-region" class="body-part" data-section="immune">
-                    <rect x="70" y="100" width="60" height="30" rx="5" fill="#E5FFE5" stroke="#667eea" stroke-width="2"/>
-                    <text x="100" y="120" text-anchor="middle" font-size="10" fill="#333" font-weight="bold">Immune</text>
-                </g>
-                <g id="skin-region" class="body-part" data-section="skin">
-                    <rect x="20" y="110" width="15" height="80" rx="7" fill="#FFF5E5" stroke="#667eea" stroke-width="2"/>
-                    <rect x="165" y="110" width="15" height="80" rx="7" fill="#FFF5E5" stroke="#667eea" stroke-width="2"/>
-                    <text x="27" y="155" text-anchor="middle" font-size="10" fill="#333" font-weight="bold">Skin</text>
-                </g>
-                <g id="aging-region" class="body-part" data-section="aging">
-                    <rect x="80" y="240" width="18" height="120" rx="5" fill="#F5E5FF" stroke="#667eea" stroke-width="2"/>
-                    <rect x="102" y="240" width="18" height="120" rx="5" fill="#F5E5FF" stroke="#667eea" stroke-width="2"/>
-                    <text x="100" y="305" text-anchor="middle" font-size="10" fill="#333" font-weight="bold">Aging</text>
-                </g>
-            </svg>
+            <div class="nav-buttons">
+                <button onclick="scrollToSection('brain')">🧠 Brain & Stress</button>
+                <button onclick="scrollToSection('metabolism')">⚡ Metabolism</button>
+                <button onclick="scrollToSection('immune')">🛡️ Immune System</button>
+                <button onclick="scrollToSection('skin')">☀️ Skin & Hair</button>
+                <button onclick="scrollToSection('aging')">⏰ Biological Aging</button>
+            </div>
+            
             <div class="instructions">
-                <p>👆 Click any body part to explore</p>
+                <p>👇 Scroll down or click above to start</p>
             </div>
         </div>
     </section>
 
-    <nav id="section-nav" style="display: none;">
-        <a href="#body-map">Body Map</a>
-        <a href="#intro">Intro</a>
-        <a href="#brain">Brain</a>
-        <a href="#metabolism">Metabolism</a>
-        <a href="#immune">Immune</a>
-        <a href="#skin">Skin</a>
-        <a href="#aging">Aging</a>
-    </nav>
-
-    <main>
-        <section id="intro">
-            <h2>Epigenetics 101</h2>
-            <div class="info-grid">
-                <div class="info-card">
-                    <h3>What it is</h3>
-                    <p>Gene regulation, not mutation. Genes don't change, expression does.</p>
-                </div>
-                <div class="info-card">
-                    <h3>What it isn't</h3>
-                    <p>Not fate. Marks are dynamic and reversible.</p>
-                </div>
-                <div class="info-card">
-                    <h3>Why it matters</h3>
-                    <p>Measurable links between daily habits and biology.</p>
-                </div>
+    <section id="brain">
+        <div class="section-header">
+            <h2>🧠 Brain & Stress</h2>
+        </div>
+        <p class="section-desc">Chronic stress affects gene regulation. Sleep and mindfulness can shift neural plasticity marks.</p>
+        
+        <div class="interactive-container">
+            <div class="input-group">
+                <label>Sleep Quality (hours):</label>
+                <input type="range" id="sleep" min="0" max="10" value="7" step="0.5">
+                <span id="sleep-value" class="value-badge">7h</span>
             </div>
-            <button class="back-to-body" onclick="scrollToBody()">← Back to Body Map</button>
-        </section>
 
-        <section id="brain">
-            <div class="section-header">
-                <h2>🧠 Brain & Stress</h2>
+            <div class="input-group">
+                <label>Perceived Stress Level:</label>
+                <input type="range" id="stress-level" min="0" max="100" value="50">
+                <span id="stress-value" class="value-badge">50%</span>
             </div>
-            <p class="section-desc">Chronic stress affects gene regulation. Sleep and mindfulness can shift neural plasticity marks.</p>
+
+            <div class="input-group">
+                <label>Mindfulness/Meditation (minutes/day):</label>
+                <input type="range" id="mindfulness" min="0" max="60" value="0" step="5">
+                <span id="mindfulness-value" class="value-badge">0m</span>
+            </div>
             
-            <div class="interactive-container">
-                <div class="input-group">
-                    <label>Sleep Quality (hours):</label>
-                    <input type="range" id="sleep" min="0" max="10" value="7" step="0.5">
-                    <span id="sleep-value" class="value-badge">7 hours</span>
+            <div class="meter-container">
+                <p class="meter-label">Stress Response Impact:</p>
+                <div class="meter">
+                    <div class="meter-fill" id="stress-meter"></div>
                 </div>
+                <div class="meter-labels">
+                    <span>Low Impact</span>
+                    <span>High Impact</span>
+                </div>
+            </div>
+            
+            <div class="result" id="stress-result">Adjust inputs to see impact</div>
+            <div class="science-note">
+                <strong>The Science:</strong> Chronic stress alters <em>FKBP5</em> methylation. Mindfulness can reverse this effect.
+            </div>
+        </div>
+    </section>
 
-                <div class="input-group">
-                    <label>Perceived Stress Level:</label>
-                    <input type="range" id="stress-level" min="0" max="100" value="50">
-                    <span id="stress-value" class="value-badge">50%</span>
-                </div>
+    <section id="metabolism">
+        <div class="section-header">
+            <h2>⚡ Metabolism</h2>
+        </div>
+        <p class="section-desc">Diet and timing impact metabolic gene regulation.</p>
+        
+        <div class="interactive-container">
+            <div class="input-group">
+                <label>Weekly Exercise (hours):</label>
+                <input type="range" id="exercise" min="0" max="14" value="3">
+                <span id="exercise-value" class="value-badge">3h</span>
+            </div>
 
-                <div class="input-group">
-                    <label>Mindfulness/Meditation (minutes/day):</label>
-                    <input type="range" id="mindfulness" min="0" max="60" value="0" step="5">
-                    <span id="mindfulness-value" class="value-badge">0 mins</span>
-                </div>
-                
-                <div class="meter-container">
-                    <p class="meter-label">Stress Response Impact:</p>
-                    <div class="meter">
-                        <div class="meter-fill" id="stress-meter"></div>
+            <div class="input-group">
+                <label>Diet Quality (% home-cooked):</label>
+                <input type="range" id="diet" min="0" max="100" value="50">
+                <span id="diet-value" class="value-badge">50%</span>
+            </div>
+
+            <div class="input-group">
+                <label>Eating Schedule:</label>
+                <select id="circadian">
+                    <option value="regular">Regular (Daytime)</option>
+                    <option value="irregular">Irregular (Late night)</option>
+                    <option value="shift">Shift Work</option>
+                </select>
+            </div>
+            
+            <div class="dial-container">
+                <p class="meter-label">Metabolic Health:</p>
+                <div class="dial">
+                    <div class="dial-needle" id="metabolism-needle"></div>
+                    <div class="dial-labels">
+                        <span class="dial-low">Poor</span>
+                        <span class="dial-high">Optimal</span>
                     </div>
                 </div>
-                
-                <div class="result" id="stress-result">Adjust inputs to see impact</div>
-                <div class="science-note">
-                    <strong>The Science:</strong> Chronic stress alters <em>FKBP5</em> methylation. Mindfulness can reverse this effect.
-                </div>
             </div>
-            <button class="back-to-body" onclick="scrollToBody()">← Back to Body Map</button>
-        </section>
-
-        <section id="metabolism">
-            <div class="section-header">
-                <h2>⚡ Metabolism</h2>
-            </div>
-            <p class="section-desc">Diet and timing impact metabolic gene regulation.</p>
             
-            <div class="interactive-container">
-                <div class="input-group">
-                    <label>Weekly Exercise (hours):</label>
-                    <input type="range" id="exercise" min="0" max="14" value="3">
-                    <span id="exercise-value" class="value-badge">3 hours</span>
-                </div>
+            <div class="result" id="metabolism-result">Adjust habits</div>
+            <div class="science-note">
+                <strong>The Science:</strong> Exercise demethylates <em>PPARGC1A</em>. Shift work disrupts <em>CLOCK</em> genes.
+            </div>
+        </div>
+    </section>
 
-                <div class="input-group">
-                    <label>Diet Quality (% home-cooked):</label>
-                    <input type="range" id="diet" min="0" max="100" value="50">
-                    <span id="diet-value" class="value-badge">50%</span>
+    <section id="immune">
+        <div class="section-header">
+            <h2>🛡️ Immune & Inflammation</h2>
+        </div>
+        <p class="section-desc">Environment shapes immune set-points.</p>
+        
+        <div class="interactive-container">
+            <div class="checkbox-group">
+                <label><input type="checkbox" class="immune-factor-negative"> Urban/Polluted Area</label>
+                <label><input type="checkbox" class="immune-factor-negative"> Smoking/Vaping</label>
+                <label><input type="checkbox" class="immune-factor-negative"> Seasonal Allergies</label>
+                <label><input type="checkbox" class="immune-factor-negative"> Chronic Stress</label>
+                <label class="positive-factor"><input type="checkbox" class="immune-factor-positive"> Nature / Pets</label>
+            </div>
+            
+            <div class="gauge-container">
+                <p class="meter-label">Inflammation Tendency:</p>
+                <div class="gauge">
+                    <div class="gauge-fill" id="immune-gauge"></div>
                 </div>
+                <div class="gauge-labels">
+                    <span>Low</span>
+                    <span>Moderate</span>
+                    <span>High</span>
+                </div>
+            </div>
+            
+            <div class="result" id="immune-result">Select factors above</div>
+            <div class="science-note">
+                <strong>The Science:</strong> Pollution affects <em>IL-6</em> histone marks.
+            </div>
+        </div>
+    </section>
 
-                <div class="input-group">
-                    <label>Eating Schedule:</label>
-                    <select id="circadian">
-                        <option value="regular">Regular (Daytime)</option>
-                        <option value="irregular">Irregular (Late night)</option>
-                        <option value="shift">Shift Work</option>
-                    </select>
+    <section id="skin">
+        <div class="section-header">
+            <h2>☀️ Skin & Hair</h2>
+        </div>
+        <div class="interactive-container">
+            <div class="input-group">
+                <label>UV Exposure:</label>
+                <select id="uv">
+                    <option value="low">Low</option>
+                    <option value="moderate" selected>Moderate</option>
+                    <option value="high">High</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Sleep Quality:</label>
+                <select id="skin-sleep">
+                    <option value="poor">Poor</option>
+                    <option value="moderate" selected>Moderate</option>
+                    <option value="good">Good</option>
+                </select>
+            </div>
+            
+            <div class="comparison">
+                <div class="comparison-item">
+                    <h4>Current Skin Age</h4>
+                    <div class="skin-visual" id="current-skin"></div>
+                    <p id="current-age">Bio Age: <span>--</span></p>
                 </div>
-                
-                <div class="dial-container">
-                    <p class="meter-label">Metabolic Health:</p>
-                    <div class="dial">
-                        <div class="dial-needle" id="metabolism-needle"></div>
-                        <div class="dial-labels">
-                            <span class="dial-low">Poor</span>
-                            <span class="dial-high">Optimal</span>
+            </div>
+            
+            <div class="result" id="skin-result">Adjust inputs to see result</div>
+        </div>
+    </section>
+
+    <section id="aging">
+        <div class="section-header">
+            <h2>⏰ Biological Aging</h2>
+        </div>
+        <div class="interactive-container">
+            <div class="input-group">
+                <label>Chronological Age:</label>
+                <input type="number" id="chrono-age" value="20" min="10" max="90">
+            </div>
+            <div class="input-group">
+                <label>Sleep Regularity:</label>
+                <input type="range" class="aging-factor" value="50">
+                <span id="sleep-reg-value" class="value-badge">50%</span>
+            </div>
+            <div class="input-group">
+                <label>Training Consistency:</label>
+                <input type="range" class="aging-factor" value="50">
+                <span id="training-value" class="value-badge">50%</span>
+            </div>
+            <div class="input-group">
+                <label>Stress Management:</label>
+                <input type="range" class="aging-factor" value="50">
+                <span id="stress-mgmt-value" class="value-badge">50%</span>
+            </div>
+            
+            <div class="clock-display">
+                <div class="clock-wrapper">
+                    <div class="clock gray-clock">
+                        <div class="clock-face">
+                            <div class="clock-hand" id="chrono-clock-hand"></div>
+                            <div class="clock-center"></div>
                         </div>
                     </div>
+                    <p>Chronological: <span id="chrono-age-display">20</span></p>
                 </div>
-                
-                <div class="result" id="metabolism-result">Adjust habits</div>
-                <div class="science-note">
-                    <strong>The Science:</strong> Exercise demethylates <em>PPARGC1A</em>. Shift work disrupts <em>CLOCK</em> genes.
-                </div>
-            </div>
-            <button class="back-to-body" onclick="scrollToBody()">← Back to Body Map</button>
-        </section>
 
-        <section id="immune">
-            <div class="section-header">
-                <h2>🛡️ Immune & Inflammation</h2>
-            </div>
-            <p class="section-desc">Environment shapes immune set-points.</p>
-            
-            <div class="interactive-container">
-                <div class="checkbox-group">
-                    <label><input type="checkbox" class="immune-factor-negative"> Urban/Polluted Area</label>
-                    <label><input type="checkbox" class="immune-factor-negative"> Smoking/Vaping</label>
-                    <label><input type="checkbox" class="immune-factor-negative"> Seasonal Allergies</label>
-                    <label><input type="checkbox" class="immune-factor-negative"> Chronic Stress</label>
-                    <label class="positive-factor"><input type="checkbox" class="immune-factor-positive"> Nature / Pets</label>
-                </div>
-                
-                <div class="gauge-container">
-                    <p class="meter-label">Inflammation Tendency:</p>
-                    
-                    <div class="gauge">
-                        <div class="gauge-fill" id="immune-gauge"></div>
-                    </div>
-                    <div class="gauge-labels">
-                        <span>Low</span>
-                        <span>Moderate</span>
-                        <span>High</span>
-                    </div>
-                </div>
-                
-                <div class="result" id="immune-result">Result</div>
-                <div class="science-note">
-                    <strong>The Science:</strong> Pollution affects <em>IL-6</em> histone marks.
-                </div>
-            </div>
-            <button class="back-to-body" onclick="scrollToBody()">← Back to Body Map</button>
-        </section>
+                <div class="vs-text">VS</div>
 
-        <section id="skin">
-            <div class="section-header">
-                <h2>☀️ Skin & Hair</h2>
-            </div>
-            <div class="interactive-container">
-                <div class="input-group">
-                    <label>UV Exposure:</label>
-                    <select id="uv">
-                        <option value="low">Low</option>
-                        <option value="moderate" selected>Moderate</option>
-                        <option value="high">High</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label>Sleep Quality:</label>
-                    <select id="skin-sleep">
-                        <option value="poor">Poor</option>
-                        <option value="moderate" selected>Moderate</option>
-                        <option value="good">Good</option>
-                    </select>
-                </div>
-                <div class="comparison">
-                    <div class="comparison-item">
-                        <h4>Current</h4>
-                        <div class="skin-visual" id="current-skin"></div>
-                        <p id="current-age">Bio Age: <span>--</span></p>
-                    </div>
-                </div>
-                <div class="result" id="skin-result">Result</div>
-            </div>
-            <button class="back-to-body" onclick="scrollToBody()">← Back to Body Map</button>
-        </section>
-
-        <section id="aging">
-            <div class="section-header">
-                <h2>⏰ Biological Aging</h2>
-            </div>
-            <div class="interactive-container">
-                <div class="input-group">
-                    <label>Chronological Age:</label>
-                    <input type="number" id="chrono-age" value="20">
-                </div>
-                <div class="input-group">
-                    <label>Sleep Regularity:</label>
-                    <input type="range" class="aging-factor" value="50">
-                    <span id="sleep-reg-value" class="value-badge">50%</span>
-                </div>
-                <div class="input-group">
-                    <label>Training Consistency:</label>
-                    <input type="range" class="aging-factor" value="50">
-                    <span id="training-value" class="value-badge">50%</span>
-                </div>
-                <div class="input-group">
-                    <label>Stress Management:</label>
-                    <input type="range" class="aging-factor" value="50">
-                    <span id="stress-mgmt-value" class="value-badge">50%</span>
-                </div>
-                
-                <div class="clock-display">
-                    <div class="clock-container">
-                        <div class="clock">
-                            <div class="clock-face">
-                                <div class="clock-hand" id="bio-clock-hand"></div>
-                                <div class="clock-center"></div>
-                            </div>
-                            <p class="clock-label">Biological Age</p>
-                            <p class="clock-value" id="bio-age-display">20</p>
+                <div class="clock-wrapper">
+                    <div class="clock purple-clock">
+                        <div class="clock-face">
+                            <div class="clock-hand" id="bio-clock-hand"></div>
+                            <div class="clock-center"></div>
                         </div>
                     </div>
-                    <div class="age-diff" id="age-difference">Diff: 0</div>
+                    <p>Biological: <span id="bio-age-display">20</span></p>
                 </div>
-                <div class="result" id="aging-result">Result</div>
             </div>
-            <button class="back-to-body" onclick="scrollToBody()">← Back to Body Map</button>
-        </section>
-    </main>
+            
+            <div class="age-diff" id="age-difference">Diff: 0</div>
+            <div class="result" id="aging-result">Result</div>
+        </div>
+    </section>
 
     <footer>
         <p>Sources: PubMed, Nature Reviews Genetics, Biological Psychiatry Journal</p>
