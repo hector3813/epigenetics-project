@@ -12,37 +12,31 @@
         <p>How Life Leaves Marks: An Epigenetics Exploration</p>
     </header>
 
-    <!-- Interactive Body Map Landing -->
     <section id="body-map" class="landing">
         <h2>Click on different parts of the body to explore</h2>
         <div class="body-container">
             <svg viewBox="0 0 200 400" class="body-svg">
-                <!-- Head/Brain -->
                 <g id="brain-region" class="body-part" data-section="brain">
                     <circle cx="100" cy="40" r="30" fill="#FFE5E5" stroke="#667eea" stroke-width="2"/>
                     <text x="100" y="45" text-anchor="middle" font-size="12" fill="#333">Brain</text>
                 </g>
 
-                <!-- Torso/Metabolism -->
                 <g id="metabolism-region" class="body-part" data-section="metabolism">
                     <ellipse cx="100" cy="150" rx="40" ry="60" fill="#E5F5FF" stroke="#667eea" stroke-width="2"/>
                     <text x="100" y="155" text-anchor="middle" font-size="12" fill="#333">Metabolism</text>
                 </g>
 
-                <!-- Immune System (chest area) -->
                 <g id="immune-region" class="body-part" data-section="immune">
                     <rect x="70" y="100" width="60" height="30" rx="5" fill="#E5FFE5" stroke="#667eea" stroke-width="2"/>
                     <text x="100" y="120" text-anchor="middle" font-size="12" fill="#333">Immune</text>
                 </g>
 
-                <!-- Skin (arms) -->
                 <g id="skin-region" class="body-part" data-section="skin">
                     <rect x="20" y="110" width="15" height="80" rx="7" fill="#FFF5E5" stroke="#667eea" stroke-width="2"/>
                     <rect x="165" y="110" width="15" height="80" rx="7" fill="#FFF5E5" stroke="#667eea" stroke-width="2"/>
                     <text x="27" y="155" text-anchor="middle" font-size="10" fill="#333">Skin</text>
                 </g>
 
-                <!-- Legs (representing aging) -->
                 <g id="aging-region" class="body-part" data-section="aging">
                     <rect x="80" y="240" width="18" height="120" rx="5" fill="#F5E5FF" stroke="#667eea" stroke-width="2"/>
                     <rect x="102" y="240" width="18" height="120" rx="5" fill="#F5E5FF" stroke="#667eea" stroke-width="2"/>
@@ -83,7 +77,7 @@
 
         <section id="brain">
             <h2>🧠 Brain & Stress</h2>
-            <p>Early life stress and chronic stress can alter regulation of stress response genes. Sleep and mindfulness/exercise can shift neural plasticity marks that support memory and mood.</p>
+            <p>Early life stress and chronic stress can alter regulation of stress response genes. Sleep and mindfulness can shift neural plasticity marks that support memory and mood.</p>
             
             <div class="interactive-container">
                 <div class="input-group">
@@ -97,6 +91,12 @@
                     <input type="range" id="stress-level" min="0" max="100" value="50">
                     <span id="stress-value">50%</span>
                 </div>
+
+                <div class="input-group">
+                    <label for="mindfulness">Mindfulness/Meditation (minutes/day):</label>
+                    <input type="range" id="mindfulness" min="0" max="60" value="0" step="5">
+                    <span id="mindfulness-value">0 mins</span>
+                </div>
                 
                 <div class="meter-container">
                     <p class="meter-label">Stress Response Impact:</p>
@@ -108,7 +108,7 @@
                 <div class="result" id="stress-result">Adjust inputs to see impact on stress response genes</div>
                 
                 <div class="science-note">
-                    <strong>The Science:</strong> Poor sleep elevates cortisol levels and can alter methylation patterns on genes involved in the HPA axis (hypothalamic-pituitary-adrenal axis), your body's stress response system.
+                    <strong>The Science:</strong> Chronic stress removes methyl groups from the <em>FKBP5</em> gene, which produces a protein that blocks your cortisol receptors. This makes your brain "deaf" to the signal to calm down. Mindfulness has been shown to reverse this, effectively re-sensitizing your stress response system.
                 </div>
             </div>
             <button class="back-to-body" onclick="scrollToBody()">← Back to Body Map</button>
@@ -116,7 +116,7 @@
 
         <section id="metabolism">
             <h2>⚡ Metabolism</h2>
-            <p>Training sessions and diet patterns can epigenetically nudge insulin sensitivity and lipid handling. Late nights and shift-like schedules impact metabolic gene regulation.</p>
+            <p>Training sessions and diet patterns can epigenetically nudge insulin sensitivity. Shift-like schedules and late-night eating impact metabolic gene regulation.</p>
             
             <div class="interactive-container">
                 <div class="input-group">
@@ -129,6 +129,15 @@
                     <label for="diet">Diet Quality (% home-cooked):</label>
                     <input type="range" id="diet" min="0" max="100" value="50">
                     <span id="diet-value">50%</span>
+                </div>
+
+                <div class="input-group">
+                    <label for="circadian">Eating Schedule (Circadian Rhythm):</label>
+                    <select id="circadian">
+                        <option value="regular">Regular (Daytime eating)</option>
+                        <option value="irregular">Irregular (Late night snacking)</option>
+                        <option value="shift">Shift Work / Overnight eating</option>
+                    </select>
                 </div>
                 
                 <div class="dial-container">
@@ -145,7 +154,7 @@
                 <div class="result" id="metabolism-result">Adjust your habits to see metabolic impact</div>
                 
                 <div class="science-note">
-                    <strong>The Science:</strong> Regular exercise and whole food diets can improve DNA methylation patterns in genes related to insulin signaling (like PPARGC1A) and fat metabolism.
+                    <strong>The Science:</strong> Exercise causes transient demethylation of the <em>PPARGC1A</em> gene promoter in muscle, "unlocking" it to build more mitochondria. However, shift work can disrupt the methylation of <em>CLOCK</em> and <em>BMAL1</em> genes, desynchronizing your metabolic liver clock from your brain clock.
                 </div>
             </div>
             <button class="back-to-body" onclick="scrollToBody()">← Back to Body Map</button>
@@ -153,25 +162,29 @@
 
         <section id="immune">
             <h2>🛡️ Immune & Inflammation</h2>
-            <p>Air quality, smoking/vaping exposure, and microbial environment shape immune set-points. Chronic stress can activate inflammatory pathways.</p>
+            <p>Air quality, smoking, and microbial environment shape immune set-points. Chronic stress can activate inflammatory pathways.</p>
             
             <div class="interactive-container">
                 <div class="checkbox-group">
                     <label>
-                        <input type="checkbox" id="urban" class="immune-factor">
+                        <input type="checkbox" id="urban" class="immune-factor-negative">
                         Live in urban/polluted area
                     </label>
                     <label>
-                        <input type="checkbox" id="smoking" class="immune-factor">
+                        <input type="checkbox" id="smoking" class="immune-factor-negative">
                         Smoking/vaping exposure
                     </label>
                     <label>
-                        <input type="checkbox" id="allergies" class="immune-factor">
+                        <input type="checkbox" id="allergies" class="immune-factor-negative">
                         Seasonal allergies
                     </label>
                     <label>
-                        <input type="checkbox" id="chronic-stress" class="immune-factor">
+                        <input type="checkbox" id="chronic-stress" class="immune-factor-negative">
                         Chronic stress
+                    </label>
+                    <label class="positive-factor">
+                        <input type="checkbox" id="nature" class="immune-factor-positive">
+                        Regular time in nature / Pets (Microbial Diversity)
                     </label>
                 </div>
                 
@@ -190,7 +203,7 @@
                 <div class="result" id="immune-result">Your inflammation baseline</div>
                 
                 <div class="science-note">
-                    <strong>The Science:</strong> Environmental exposures can modify histone acetylation patterns on inflammatory genes (like IL-6, TNF-α), affecting your immune system's baseline reactivity.
+                    <strong>The Science:</strong> Pollution modifies histone marks on inflammatory genes like <em>IL-6</em>. However, exposure to diverse microbes (nature/pets) trains immune T-cells via epigenetic mechanisms, preventing the immune system from becoming "trigger happy" (chronic inflammation).
                 </div>
             </div>
             <button class="back-to-body" onclick="scrollToBody()">← Back to Body Map</button>

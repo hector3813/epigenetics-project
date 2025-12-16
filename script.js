@@ -33,12 +33,14 @@ document.addEventListener('DOMContentLoaded', function() {
     initAging();
 });
 
-// ===== BRAIN & STRESS SECTION =====
+// ===== BRAIN & STRESS SECTION (UPDATED) =====
 function initBrainStress() {
     const sleepSlider = document.getElementById('sleep');
     const sleepValue = document.getElementById('sleep-value');
     const stressSlider = document.getElementById('stress-level');
     const stressValue = document.getElementById('stress-value');
+    const mindSlider = document.getElementById('mindfulness'); // NEW
+    const mindValue = document.getElementById('mindfulness-value'); // NEW
     const stressMeter = document.getElementById('stress-meter');
     const stressResult = document.getElementById('stress-result');
     
@@ -47,30 +49,40 @@ function initBrainStress() {
     function updateStress() {
         const sleep = parseFloat(sleepSlider.value);
         const stressLevel = parseInt(stressSlider.value);
+        const mindfulness = parseInt(mindSlider.value); // NEW
         
         // Calculate combined stress impact
         // Good sleep reduces stress impact, poor sleep amplifies it
         const sleepFactor = (10 - sleep) / 10; // 0-1, higher = worse sleep
-        const combinedStress = (sleepFactor * 50) + (stressLevel * 0.5);
+        
+        // NEW Logic: Mindfulness actively subtracts from the stress score
+        // 30 mins of mindfulness can offset ~20% of stress impact
+        const mindOffset = mindfulness * 0.8; 
+        
+        let combinedStress = (sleepFactor * 50) + (stressLevel * 0.5) - mindOffset;
+        
+        // Clamp result between 0 and 100
+        combinedStress = Math.max(0, Math.min(100, combinedStress));
         
         // Update display values
         sleepValue.textContent = sleep + ' hours';
         stressValue.textContent = stressLevel + '%';
+        mindValue.textContent = mindfulness + ' mins'; // NEW
         
         // Update meter
         stressMeter.style.width = combinedStress + '%';
         
         // Update result text and color
         if (combinedStress < 30) {
-            stressResult.textContent = '✓ Excellent! Low cortisol levels support healthy HPA axis regulation and neural plasticity. Your stress response genes are likely well-regulated.';
+            stressResult.textContent = '✓ Excellent! Low cortisol and mindfulness practices support HPA axis regulation. You are likely reversing stress-induced methylation marks.';
             stressResult.style.background = '#d4edda';
             stressResult.style.borderLeftColor = '#4CAF50';
         } else if (combinedStress < 60) {
-            stressResult.textContent = '⚠ Moderate stress impact. Some epigenetic changes possible in stress-response genes. Consider improving sleep quality or stress management.';
+            stressResult.textContent = '⚠ Moderate stress impact. Your stress genes are under pressure. Try increasing sleep or adding 10 mins of mindfulness to lower this score.';
             stressResult.style.background = '#fff3cd';
             stressResult.style.borderLeftColor = '#FFC107';
         } else {
-            stressResult.textContent = '✗ High stress burden. Chronic elevation may alter methylation patterns on genes like FKBP5 and NR3C1, affecting your long-term stress response and mood regulation.';
+            stressResult.textContent = '✗ High stress burden. Chronic elevation is likely demethylating FKBP5, making your stress response harder to turn off. Prioritize recovery.';
             stressResult.style.background = '#f8d7da';
             stressResult.style.borderLeftColor = '#F44336';
         }
@@ -78,17 +90,18 @@ function initBrainStress() {
     
     sleepSlider.addEventListener('input', updateStress);
     stressSlider.addEventListener('input', updateStress);
+    mindSlider.addEventListener('input', updateStress); // NEW
     
-    // Initialize
     updateStress();
 }
 
-// ===== METABOLISM SECTION =====
+// ===== METABOLISM SECTION (UPDATED) =====
 function initMetabolism() {
     const exerciseSlider = document.getElementById('exercise');
     const exerciseValue = document.getElementById('exercise-value');
     const dietSlider = document.getElementById('diet');
     const dietValue = document.getElementById('diet-value');
+    const circadianSelect = document.getElementById('circadian'); // NEW
     const metabolismNeedle = document.getElementById('metabolism-needle');
     const metabolismResult = document.getElementById('metabolism-result');
     
@@ -97,31 +110,42 @@ function initMetabolism() {
     function updateMetabolism() {
         const exercise = parseInt(exerciseSlider.value);
         const diet = parseInt(dietSlider.value);
+        const schedule = circadianSelect.value; // NEW
         
         // Calculate metabolic health score (0-100)
-        const exerciseScore = (exercise / 14) * 50; // Max 7 hours = 50 points
-        const dietScore = (diet / 100) * 50; // Max 50 points
-        const totalScore = exerciseScore + dietScore;
+        let exerciseScore = (exercise / 14) * 50; 
+        let dietScore = (diet / 100) * 50; 
+        let totalScore = exerciseScore + dietScore;
         
+        // NEW Logic: Penalize for poor circadian rhythm
+        if (schedule === 'irregular') {
+            totalScore -= 15; // Penalty for late eating
+        } else if (schedule === 'shift') {
+            totalScore -= 30; // Heavy penalty for shift work
+        }
+        
+        // Clamp score
+        totalScore = Math.max(0, Math.min(100, totalScore));
+
         // Update display values
         exerciseValue.textContent = exercise + ' hours';
         dietValue.textContent = diet + '%';
         
-        // Update needle rotation (-90deg = left/poor, 90deg = right/optimal)
+        // Update needle rotation
         const rotation = (totalScore / 100) * 180 - 90;
         metabolismNeedle.style.transform = `translateX(-50%) rotate(${rotation}deg)`;
         
         // Update result text
         if (totalScore < 30) {
-            metabolismResult.textContent = '⚠ Poor metabolic profile. Sedentary lifestyle and processed foods may lead to unfavorable methylation in genes like PPARGC1A, reducing insulin sensitivity.';
+            metabolismResult.textContent = '⚠ Poor metabolic profile. Circadian disruption or low activity is likely silencing protective genes like PPARGC1A.';
             metabolismResult.style.background = '#f8d7da';
             metabolismResult.style.borderLeftColor = '#F44336';
         } else if (totalScore < 60) {
-            metabolismResult.textContent = '→ Moderate metabolic health. Some beneficial epigenetic changes, but room for improvement in exercise consistency or diet quality.';
+            metabolismResult.textContent = '→ Moderate metabolic health. Improve your eating schedule or exercise consistency to optimize gene expression.';
             metabolismResult.style.background = '#fff3cd';
             metabolismResult.style.borderLeftColor = '#FFC107';
         } else {
-            metabolismResult.textContent = '✓ Excellent metabolic health! Regular exercise and whole foods promote favorable methylation patterns in metabolic genes, improving insulin sensitivity and lipid handling.';
+            metabolismResult.textContent = '✓ Excellent! Regular activity and circadian sync (daytime eating) promote optimal methylation in metabolic pathways.';
             metabolismResult.style.background = '#d4edda';
             metabolismResult.style.borderLeftColor = '#4CAF50';
         }
@@ -129,57 +153,70 @@ function initMetabolism() {
     
     exerciseSlider.addEventListener('input', updateMetabolism);
     dietSlider.addEventListener('input', updateMetabolism);
+    circadianSelect.addEventListener('change', updateMetabolism); // NEW
     
-    // Initialize
     updateMetabolism();
 }
 
-// ===== IMMUNE & INFLAMMATION SECTION =====
+// ===== IMMUNE & INFLAMMATION SECTION (UPDATED) =====
 function initImmune() {
-    const immuneFactors = document.querySelectorAll('.immune-factor');
+    // NEW: Select based on positive/negative classes
+    const negFactors = document.querySelectorAll('.immune-factor-negative');
+    const posFactors = document.querySelectorAll('.immune-factor-positive');
     const immuneGauge = document.getElementById('immune-gauge');
     const immuneResult = document.getElementById('immune-result');
     
-    if (immuneFactors.length === 0) return;
+    if (negFactors.length === 0) return;
     
     function updateImmune() {
-        // Count checked factors
-        let checkedCount = 0;
-        immuneFactors.forEach(factor => {
-            if (factor.checked) checkedCount++;
+        let negCount = 0;
+        let posCount = 0;
+        
+        negFactors.forEach(factor => {
+            if (factor.checked) negCount++;
+        });
+
+        posFactors.forEach(factor => {
+            if (factor.checked) posCount++;
         });
         
-        // Calculate inflammation level (0-4 factors)
-        const inflammationPercent = (checkedCount / 4) * 100;
+        // Calculate score: Start with negatives, subtract positives (protection)
+        // Max 4 negatives.
+        let riskScore = negCount;
+        if (posCount > 0) riskScore -= 1; // Nature "cancels out" one risk factor
+        
+        // Ensure strictly non-negative for display
+        riskScore = Math.max(0, riskScore);
+        
+        // 0-4 scale converted to percentage
+        const inflammationPercent = (riskScore / 4) * 100;
         
         // Update gauge
-        immuneGauge.style.width = inflammationPercent + '%';
+        immuneGauge.style.width = Math.min(100, inflammationPercent) + '%';
         
         // Update result text
-        if (checkedCount === 0) {
-            immuneResult.textContent = '✓ Low inflammation tendency. Your immune system baseline appears well-regulated with minimal environmental stressors.';
+        if (riskScore <= 0) {
+            immuneResult.textContent = '✓ Low inflammation. Good environment or protective habits (nature exposure) are keeping your immune set-points regulated.';
             immuneResult.style.background = '#d4edda';
             immuneResult.style.borderLeftColor = '#4CAF50';
-        } else if (checkedCount <= 2) {
-            immuneResult.textContent = `⚠ Moderate inflammation risk (${checkedCount} factors). Some epigenetic changes in inflammatory pathways possible. Consider addressing these exposures.`;
+        } else if (riskScore <= 2) {
+            immuneResult.textContent = `⚠ Moderate inflammation risk. You have some environmental stressors affecting your histone acetylation.`;
             immuneResult.style.background = '#fff3cd';
             immuneResult.style.borderLeftColor = '#FFC107';
         } else {
-            immuneResult.textContent = `✗ High inflammation tendency (${checkedCount} factors). Multiple environmental stressors may alter histone modifications on genes like IL-6 and TNF-α, increasing baseline inflammation.`;
+            immuneResult.textContent = `✗ High inflammation tendency. Multiple stressors are likely increasing baseline inflammatory gene expression (IL-6).`;
             immuneResult.style.background = '#f8d7da';
             immuneResult.style.borderLeftColor = '#F44336';
         }
     }
     
-    immuneFactors.forEach(factor => {
-        factor.addEventListener('change', updateImmune);
-    });
+    negFactors.forEach(factor => factor.addEventListener('change', updateImmune));
+    posFactors.forEach(factor => factor.addEventListener('change', updateImmune));
     
-    // Initialize
     updateImmune();
 }
 
-// ===== SKIN & HAIR SECTION =====
+// ===== SKIN & HAIR SECTION (UNCHANGED) =====
 function initSkin() {
     const uvSelect = document.getElementById('uv');
     const sleepSelect = document.getElementById('skin-sleep');
@@ -249,7 +286,7 @@ function initSkin() {
     updateSkin();
 }
 
-// ===== BIOLOGICAL AGING SECTION =====
+// ===== BIOLOGICAL AGING SECTION (UNCHANGED) =====
 function initAging() {
     const chronoAgeInput = document.getElementById('chrono-age');
     const sleepRegSlider = document.getElementById('sleep-regularity');
@@ -284,8 +321,6 @@ function initAging() {
         const lifestyleScore = (sleepReg + training + stressMgmt) / 3;
         
         // Calculate biological age deviation
-        // Good habits (>70%) can make you younger
-        // Poor habits (<30%) can make you older
         let ageDelta;
         if (lifestyleScore > 70) {
             ageDelta = -((lifestyleScore - 70) / 30) * 5; // Up to -5 years
@@ -299,7 +334,6 @@ function initAging() {
         bioAgeDisplay.textContent = bioAge;
         
         // Update clock hands
-        // Map ages to 0-360 degrees (each year = degrees based on typical lifespan)
         const maxAge = 100;
         const chronoRotation = (chronoAge / maxAge) * 360;
         const bioRotation = (bioAge / maxAge) * 360;

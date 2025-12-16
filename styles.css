@@ -273,6 +273,16 @@ section > p {
     background: #f0f4ff;
 }
 
+/* New style for positive factors */
+.checkbox-group label.positive-factor {
+    border-left: 4px solid #4CAF50;
+    background: #f0fff4;
+}
+
+.checkbox-group label.positive-factor:hover {
+    background: #e0ffe8;
+}
+
 .checkbox-group input[type="checkbox"] {
     width: 20px;
     height: 20px;
