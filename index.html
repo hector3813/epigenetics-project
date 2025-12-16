@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Without Changing My DNA: How Life Leaves Marks</title>
+    <title>Without Changing My DNA</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -21,23 +21,19 @@
                     <circle cx="100" cy="40" r="30" fill="#FFE5E5" stroke="#667eea" stroke-width="2"/>
                     <text x="100" y="45" text-anchor="middle" font-size="10" fill="#333" font-weight="bold">Brain</text>
                 </g>
-
                 <g id="metabolism-region" class="body-part" data-section="metabolism">
                     <ellipse cx="100" cy="150" rx="40" ry="60" fill="#E5F5FF" stroke="#667eea" stroke-width="2"/>
                     <text x="100" y="155" text-anchor="middle" font-size="10" fill="#333" font-weight="bold">Metabolism</text>
                 </g>
-
                 <g id="immune-region" class="body-part" data-section="immune">
                     <rect x="70" y="100" width="60" height="30" rx="5" fill="#E5FFE5" stroke="#667eea" stroke-width="2"/>
                     <text x="100" y="120" text-anchor="middle" font-size="10" fill="#333" font-weight="bold">Immune</text>
                 </g>
-
                 <g id="skin-region" class="body-part" data-section="skin">
                     <rect x="20" y="110" width="15" height="80" rx="7" fill="#FFF5E5" stroke="#667eea" stroke-width="2"/>
                     <rect x="165" y="110" width="15" height="80" rx="7" fill="#FFF5E5" stroke="#667eea" stroke-width="2"/>
                     <text x="27" y="155" text-anchor="middle" font-size="10" fill="#333" font-weight="bold">Skin</text>
                 </g>
-
                 <g id="aging-region" class="body-part" data-section="aging">
                     <rect x="80" y="240" width="18" height="120" rx="5" fill="#F5E5FF" stroke="#667eea" stroke-width="2"/>
                     <rect x="102" y="240" width="18" height="120" rx="5" fill="#F5E5FF" stroke="#667eea" stroke-width="2"/>
@@ -45,7 +41,7 @@
                 </g>
             </svg>
             <div class="instructions">
-                <p>👆 Click any body part to explore how your lifestyle affects your epigenetics</p>
+                <p>👆 Click any body part to explore</p>
             </div>
         </div>
     </section>
@@ -53,11 +49,11 @@
     <nav id="section-nav" style="display: none;">
         <a href="#body-map">Body Map</a>
         <a href="#intro">Intro</a>
-        <a href="#brain">Brain & Stress</a>
+        <a href="#brain">Brain</a>
         <a href="#metabolism">Metabolism</a>
         <a href="#immune">Immune</a>
-        <a href="#skin">Skin & Hair</a>
-        <a href="#aging">Biological Aging</a>
+        <a href="#skin">Skin</a>
+        <a href="#aging">Aging</a>
     </nav>
 
     <main>
@@ -66,15 +62,15 @@
             <div class="info-grid">
                 <div class="info-card">
                     <h3>What it is</h3>
-                    <p>Gene regulation, not gene mutation. Your genes don't change, but how they're expressed does.</p>
+                    <p>Gene regulation, not mutation. Genes don't change, expression does.</p>
                 </div>
                 <div class="info-card">
                     <h3>What it isn't</h3>
-                    <p>Not fate. Epigenetic marks can be dynamic and tissue-specific.</p>
+                    <p>Not fate. Marks are dynamic and reversible.</p>
                 </div>
                 <div class="info-card">
                     <h3>Why it matters</h3>
-                    <p>There are measurable links between your daily habits and your biology.</p>
+                    <p>Measurable links between daily habits and biology.</p>
                 </div>
             </div>
             <button class="back-to-body" onclick="scrollToBody()">← Back to Body Map</button>
@@ -84,23 +80,23 @@
             <div class="section-header">
                 <h2>🧠 Brain & Stress</h2>
             </div>
-            <p class="section-desc">Early life stress and chronic stress can alter regulation of stress response genes. Sleep and mindfulness can shift neural plasticity marks.</p>
+            <p class="section-desc">Chronic stress affects gene regulation. Sleep and mindfulness can shift neural plasticity marks.</p>
             
             <div class="interactive-container">
                 <div class="input-group">
-                    <label for="sleep">Sleep Quality (hours):</label>
+                    <label>Sleep Quality (hours):</label>
                     <input type="range" id="sleep" min="0" max="10" value="7" step="0.5">
                     <span id="sleep-value" class="value-badge">7 hours</span>
                 </div>
 
                 <div class="input-group">
-                    <label for="stress-level">Perceived Stress Level:</label>
+                    <label>Perceived Stress Level:</label>
                     <input type="range" id="stress-level" min="0" max="100" value="50">
                     <span id="stress-value" class="value-badge">50%</span>
                 </div>
 
                 <div class="input-group">
-                    <label for="mindfulness">Mindfulness/Meditation (minutes/day):</label>
+                    <label>Mindfulness/Meditation (minutes/day):</label>
                     <input type="range" id="mindfulness" min="0" max="60" value="0" step="5">
                     <span id="mindfulness-value" class="value-badge">0 mins</span>
                 </div>
@@ -112,10 +108,9 @@
                     </div>
                 </div>
                 
-                <div class="result" id="stress-result">Adjust inputs to see impact on stress response genes</div>
-                
+                <div class="result" id="stress-result">Adjust inputs to see impact</div>
                 <div class="science-note">
-                    <strong>The Science:</strong> Chronic stress removes methyl groups from the <em>FKBP5</em> gene, blocking cortisol receptors. Mindfulness has been shown to reverse this, effectively re-sensitizing your stress response system.
+                    <strong>The Science:</strong> Chronic stress alters <em>FKBP5</em> methylation. Mindfulness can reverse this effect.
                 </div>
             </div>
             <button class="back-to-body" onclick="scrollToBody()">← Back to Body Map</button>
@@ -125,27 +120,27 @@
             <div class="section-header">
                 <h2>⚡ Metabolism</h2>
             </div>
-            <p class="section-desc">Training sessions and diet patterns can epigenetically nudge insulin sensitivity. Shift-like schedules impact metabolic gene regulation.</p>
+            <p class="section-desc">Diet and timing impact metabolic gene regulation.</p>
             
             <div class="interactive-container">
                 <div class="input-group">
-                    <label for="exercise">Weekly Exercise (hours):</label>
+                    <label>Weekly Exercise (hours):</label>
                     <input type="range" id="exercise" min="0" max="14" value="3">
                     <span id="exercise-value" class="value-badge">3 hours</span>
                 </div>
 
                 <div class="input-group">
-                    <label for="diet">Diet Quality (% home-cooked):</label>
+                    <label>Diet Quality (% home-cooked):</label>
                     <input type="range" id="diet" min="0" max="100" value="50">
                     <span id="diet-value" class="value-badge">50%</span>
                 </div>
 
                 <div class="input-group">
-                    <label for="circadian">Eating Schedule (Circadian Rhythm):</label>
+                    <label>Eating Schedule:</label>
                     <select id="circadian">
-                        <option value="regular">Regular (Daytime eating)</option>
-                        <option value="irregular">Irregular (Late night snacking)</option>
-                        <option value="shift">Shift Work / Overnight eating</option>
+                        <option value="regular">Regular (Daytime)</option>
+                        <option value="irregular">Irregular (Late night)</option>
+                        <option value="shift">Shift Work</option>
                     </select>
                 </div>
                 
@@ -160,10 +155,9 @@
                     </div>
                 </div>
                 
-                <div class="result" id="metabolism-result">Adjust your habits to see metabolic impact</div>
-                
+                <div class="result" id="metabolism-result">Adjust habits</div>
                 <div class="science-note">
-                    <strong>The Science:</strong> Exercise causes transient demethylation of the <em>PPARGC1A</em> gene promoter, "unlocking" it to build mitochondria. Shift work disrupts the methylation of <em>CLOCK</em> and <em>BMAL1</em> genes.
+                    <strong>The Science:</strong> Exercise demethylates <em>PPARGC1A</em>. Shift work disrupts <em>CLOCK</em> genes.
                 </div>
             </div>
             <button class="back-to-body" onclick="scrollToBody()">← Back to Body Map</button>
@@ -173,48 +167,33 @@
             <div class="section-header">
                 <h2>🛡️ Immune & Inflammation</h2>
             </div>
-            <p class="section-desc">Air quality, smoking, and microbial environment shape immune set-points. Chronic stress can activate inflammatory pathways.</p>
+            <p class="section-desc">Environment shapes immune set-points.</p>
             
             <div class="interactive-container">
                 <div class="checkbox-group">
-                    <label>
-                        <input type="checkbox" id="urban" class="immune-factor-negative">
-                        Live in urban/polluted area
-                    </label>
-                    <label>
-                        <input type="checkbox" id="smoking" class="immune-factor-negative">
-                        Smoking/vaping exposure
-                    </label>
-                    <label>
-                        <input type="checkbox" id="allergies" class="immune-factor-negative">
-                        Seasonal allergies
-                    </label>
-                    <label>
-                        <input type="checkbox" id="chronic-stress" class="immune-factor-negative">
-                        Chronic stress
-                    </label>
-                    <label class="positive-factor">
-                        <input type="checkbox" id="nature" class="immune-factor-positive">
-                        Regular time in nature / Pets
-                    </label>
+                    <label><input type="checkbox" class="immune-factor-negative"> Urban/Polluted Area</label>
+                    <label><input type="checkbox" class="immune-factor-negative"> Smoking/Vaping</label>
+                    <label><input type="checkbox" class="immune-factor-negative"> Seasonal Allergies</label>
+                    <label><input type="checkbox" class="immune-factor-negative"> Chronic Stress</label>
+                    <label class="positive-factor"><input type="checkbox" class="immune-factor-positive"> Nature / Pets</label>
                 </div>
                 
                 <div class="gauge-container">
                     <p class="meter-label">Inflammation Tendency:</p>
+                    
                     <div class="gauge">
                         <div class="gauge-fill" id="immune-gauge"></div>
-                        <div class="gauge-labels">
-                            <span>Low</span>
-                            <span>Moderate</span>
-                            <span>High</span>
-                        </div>
+                    </div>
+                    <div class="gauge-labels">
+                        <span>Low</span>
+                        <span>Moderate</span>
+                        <span>High</span>
                     </div>
                 </div>
                 
-                <div class="result" id="immune-result">Your inflammation baseline</div>
-                
+                <div class="result" id="immune-result">Result</div>
                 <div class="science-note">
-                    <strong>The Science:</strong> Pollution modifies histone marks on inflammatory genes like <em>IL-6</em>. Exposure to diverse microbes (nature/pets) trains immune T-cells via epigenetic mechanisms.
+                    <strong>The Science:</strong> Pollution affects <em>IL-6</em> histone marks.
                 </div>
             </div>
             <button class="back-to-body" onclick="scrollToBody()">← Back to Body Map</button>
@@ -224,49 +203,31 @@
             <div class="section-header">
                 <h2>☀️ Skin & Hair</h2>
             </div>
-            <p class="section-desc">UV exposure and stress can influence pigmentation and aging pathways through epigenetic marks.</p>
-            
             <div class="interactive-container">
                 <div class="input-group">
-                    <label for="uv">UV Exposure:</label>
-                    <select id="uv" class="skin-factor">
-                        <option value="low">Low (always sunscreen/covered)</option>
-                        <option value="moderate" selected>Moderate (sometimes protected)</option>
-                        <option value="high">High (frequent sun, minimal protection)</option>
+                    <label>UV Exposure:</label>
+                    <select id="uv">
+                        <option value="low">Low</option>
+                        <option value="moderate" selected>Moderate</option>
+                        <option value="high">High</option>
                     </select>
                 </div>
-
                 <div class="input-group">
-                    <label for="skin-sleep">Sleep During Stressful Periods:</label>
-                    <select id="skin-sleep" class="skin-factor">
-                        <option value="poor">Poor (< 5 hours)</option>
-                        <option value="moderate" selected>Moderate (5-7 hours)</option>
-                        <option value="good">Good (7+ hours)</option>
+                    <label>Sleep Quality:</label>
+                    <select id="skin-sleep">
+                        <option value="poor">Poor</option>
+                        <option value="moderate" selected>Moderate</option>
+                        <option value="good">Good</option>
                     </select>
                 </div>
-                
                 <div class="comparison">
                     <div class="comparison-item">
-                        <h4>Current Habits</h4>
-                        <div class="skin-visual" id="current-skin">
-                            <div class="skin-indicator"></div>
-                        </div>
-                        <p id="current-age">Biological skin age: <span>--</span></p>
-                    </div>
-                    <div class="comparison-item">
-                        <h4>Optimal Habits</h4>
-                        <div class="skin-visual optimal">
-                            <div class="skin-indicator"></div>
-                        </div>
-                        <p>Biological skin age: <span>Your age</span></p>
+                        <h4>Current</h4>
+                        <div class="skin-visual" id="current-skin"></div>
+                        <p id="current-age">Bio Age: <span>--</span></p>
                     </div>
                 </div>
-                
-                <div class="result" id="skin-result">Adjust factors to compare</div>
-                
-                <div class="science-note">
-                    <strong>The Science:</strong> UV radiation can alter DNA methylation in skin cells, affecting genes involved in collagen production and melanin synthesis, accelerating visible aging.
-                </div>
+                <div class="result" id="skin-result">Result</div>
             </div>
             <button class="back-to-body" onclick="scrollToBody()">← Back to Body Map</button>
         </section>
@@ -275,30 +236,24 @@
             <div class="section-header">
                 <h2>⏰ Biological Aging</h2>
             </div>
-            <p class="section-desc">Methylation clocks estimate biological vs chronological age. Lifestyle patterns correlate with how fast your epigenetic clock ticks.</p>
-            
             <div class="interactive-container">
                 <div class="input-group">
-                    <label for="chrono-age">Your Chronological Age:</label>
-                    <input type="number" id="chrono-age" min="15" max="80" value="20">
+                    <label>Chronological Age:</label>
+                    <input type="number" id="chrono-age" value="20">
                 </div>
-
-                <h4 style="margin-top: 1.5rem; color: #667eea;">Your Lifestyle Consistency:</h4>
                 <div class="input-group">
-                    <label for="sleep-regularity">Sleep Regularity:</label>
-                    <input type="range" id="sleep-regularity" min="0" max="100" value="50" class="aging-factor">
+                    <label>Sleep Regularity:</label>
+                    <input type="range" class="aging-factor" value="50">
                     <span id="sleep-reg-value" class="value-badge">50%</span>
                 </div>
-
                 <div class="input-group">
-                    <label for="training">Training Consistency:</label>
-                    <input type="range" id="training" min="0" max="100" value="50" class="aging-factor">
+                    <label>Training Consistency:</label>
+                    <input type="range" class="aging-factor" value="50">
                     <span id="training-value" class="value-badge">50%</span>
                 </div>
-
                 <div class="input-group">
-                    <label for="stress-mgmt">Stress Management:</label>
-                    <input type="range" id="stress-mgmt" min="0" max="100" value="50" class="aging-factor">
+                    <label>Stress Management:</label>
+                    <input type="range" class="aging-factor" value="50">
                     <span id="stress-mgmt-value" class="value-badge">50%</span>
                 </div>
                 
@@ -312,38 +267,17 @@
                             <p class="clock-label">Biological Age</p>
                             <p class="clock-value" id="bio-age-display">20</p>
                         </div>
-                        <div class="vs">vs</div>
-                        <div class="clock">
-                            <div class="clock-face">
-                                <div class="clock-hand chrono" id="chrono-clock-hand"></div>
-                                <div class="clock-center"></div>
-                            </div>
-                            <p class="clock-label">Chronological Age</p>
-                            <p class="clock-value" id="chrono-age-display">20</p>
-                        </div>
                     </div>
-                    <div class="age-diff" id="age-difference">Age difference: 0 years</div>
+                    <div class="age-diff" id="age-difference">Diff: 0</div>
                 </div>
-                
-                <div class="result" id="aging-result">Adjust lifestyle factors to see impact on biological aging</div>
-                
-                <div class="science-note">
-                    <strong>The Science:</strong> DNA methylation clocks (like Horvath's clock) measure methylation at specific CpG sites. Healthy habits can slow your epigenetic aging rate.
-                </div>
+                <div class="result" id="aging-result">Result</div>
             </div>
             <button class="back-to-body" onclick="scrollToBody()">← Back to Body Map</button>
         </section>
     </main>
 
     <footer>
-        <h3>Sources</h3>
-        <ul>
-            <li><a href="https://www.biologicalpsychiatryjournal.com/article/S0006-3223(14)00967-6/fulltext" target="_blank">Biological Psychiatry Journal</a></li>
-            <li><a href="https://pubmed.ncbi.nlm.nih.gov/26073068/" target="_blank">PubMed Study on Epigenetics</a></li>
-            <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6557592/" target="_blank">PMC Article on Lifestyle & Epigenetics</a></li>
-            <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6724236/" target="_blank">PMC Article on Environmental Factors</a></li>
-            <li><a href="https://www.nature.com/articles/s41576-018-0004-3" target="_blank">Nature Reviews: DNA Methylation & Aging</a></li>
-        </ul>
+        <p>Sources: PubMed, Nature Reviews Genetics, Biological Psychiatry Journal</p>
     </footer>
 
     <script src="script.js"></script>
