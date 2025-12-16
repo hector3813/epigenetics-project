@@ -16,16 +16,37 @@
     <section id="body-map" class="landing">
         <h2>Click a body part to explore</h2>
         <div class="body-container">
-            <div class="nav-buttons">
-                <button onclick="scrollToSection('brain')">🧠 Brain & Stress</button>
-                <button onclick="scrollToSection('metabolism')">⚡ Metabolism</button>
-                <button onclick="scrollToSection('immune')">🛡️ Immune System</button>
-                <button onclick="scrollToSection('skin')">☀️ Skin & Hair</button>
-                <button onclick="scrollToSection('aging')">⏰ Biological Aging</button>
-            </div>
+            <svg viewBox="0 0 200 400" class="body-svg">
+                <g id="brain-region" class="body-part" data-section="brain">
+                    <circle cx="100" cy="40" r="35" fill="#e0e7ff" stroke="#4e54c8" stroke-width="2"/>
+                    <text x="100" y="45" text-anchor="middle" font-size="10" fill="#333" font-weight="bold" style="pointer-events: none;">Brain</text>
+                </g>
+
+                <g id="metabolism-region" class="body-part" data-section="metabolism">
+                    <ellipse cx="100" cy="150" rx="45" ry="65" fill="#e0e7ff" stroke="#4e54c8" stroke-width="2"/>
+                    <text x="100" y="155" text-anchor="middle" font-size="10" fill="#333" font-weight="bold" style="pointer-events: none;">Metabolism</text>
+                </g>
+
+                <g id="immune-region" class="body-part" data-section="immune">
+                    <path d="M100 95 L120 105 L120 125 L100 135 L80 125 L80 105 Z" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+                    <text x="100" y="120" text-anchor="middle" font-size="9" fill="#065f46" font-weight="bold" style="pointer-events: none;">Immune</text>
+                </g>
+
+                <g id="skin-region" class="body-part" data-section="skin">
+                    <rect x="15" y="110" width="20" height="90" rx="10" fill="#ffedd5" stroke="#f97316" stroke-width="2"/>
+                    <rect x="165" y="110" width="20" height="90" rx="10" fill="#ffedd5" stroke="#f97316" stroke-width="2"/>
+                    <text x="25" y="160" text-anchor="middle" font-size="10" fill="#9a3412" font-weight="bold" transform="rotate(-90 25,160)" style="pointer-events: none;">Skin</text>
+                </g>
+
+                <g id="aging-region" class="body-part" data-section="aging">
+                    <rect x="75" y="240" width="22" height="130" rx="10" fill="#f3e8ff" stroke="#9333ea" stroke-width="2"/>
+                    <rect x="103" y="240" width="22" height="130" rx="10" fill="#f3e8ff" stroke="#9333ea" stroke-width="2"/>
+                    <text x="100" y="300" text-anchor="middle" font-size="10" fill="#6b21a8" font-weight="bold" style="pointer-events: none;">Aging</text>
+                </g>
+            </svg>
             
             <div class="instructions">
-                <p>👇 Scroll down or click above to start</p>
+                <p>👆 Click any highlighted part to start</p>
             </div>
         </div>
     </section>

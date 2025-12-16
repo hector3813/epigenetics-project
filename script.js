@@ -1,14 +1,21 @@
-// Navigation helper
-function scrollToSection(id) {
-    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-}
-
 document.addEventListener('DOMContentLoaded', function() {
     initBrain();
     initMeta();
     initImmune();
     initSkin();
     initAging();
+
+    // Body Map Navigation
+    const bodyParts = document.querySelectorAll('.body-part');
+    bodyParts.forEach(part => {
+        part.addEventListener('click', () => {
+            const id = part.getAttribute('data-section');
+            const target = document.getElementById(id);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    });
 });
 
 // BRAIN SECTION
@@ -28,35 +35,22 @@ function initBrain() {
         document.getElementById('stress-value').textContent = stress + '%';
         document.getElementById('mindfulness-value').textContent = mind + 'm';
 
-        // Updated Math to prevent bar from hitting 0 too easily
-        // Base score is the stress level (0-100)
         let score = stress;
-        
-        // Sleep benefit: if sleep > 6, reduce stress score slightly
-        if (sleep > 6) {
-            score -= (sleep - 6) * 5; 
-        }
-        
-        // Mindfulness benefit: significant reduction
-        // 30 mins removes 15 points of stress impact
+        if (sleep > 6) score -= (sleep - 6) * 5; 
         score -= (mind * 0.5);
-
-        // Ensure score stays between 5 and 100 for visual consistency
         score = Math.max(5, Math.min(100, score));
 
-        // Visual update
         meter.style.width = score + '%';
 
-        // Feedback Logic
         if(score < 35) {
             result.textContent = "✓ Low Stress Impact. Your genes are well-regulated.";
-            result.style.borderLeftColor = "#22c55e"; // Green
+            result.style.borderLeftColor = "#22c55e";
         } else if(score < 65) {
             result.textContent = "⚠ Moderate Impact. Try increasing mindfulness.";
-            result.style.borderLeftColor = "#eab308"; // Yellow
+            result.style.borderLeftColor = "#eab308";
         } else {
             result.textContent = "✗ High Impact. Chronic stress risk detected.";
-            result.style.borderLeftColor = "#ef4444"; // Red
+            result.style.borderLeftColor = "#ef4444";
         }
     }
 
@@ -80,14 +74,10 @@ function initMeta() {
         document.getElementById('diet-value').textContent = diet + '%';
 
         let score = ((ex/14)*50) + ((diet/100)*50);
-        
-        // Penalties for schedule
         if(schIn.value === 'irregular') score -= 15;
         if(schIn.value === 'shift') score -= 30;
 
         score = Math.max(0, Math.min(100, score));
-        
-        // Rotate needle: -90deg is Poor (0), 90deg is Optimal (100)
         const rot = (score/100)*180 - 90;
         needle.style.transform = `translateX(-50%) rotate(${rot}deg)`;
 
@@ -126,10 +116,8 @@ function initImmune() {
             }
         });
 
-        // Calculate percentage (0 to 100)
-        // Max likely negative factors is 4.
         let netScore = bad - good; 
-        if (netScore < 0) netScore = 0; // Can't have negative inflammation
+        if (netScore < 0) netScore = 0; 
         
         let pct = (netScore / 4) * 100;
         pct = Math.min(100, pct);
@@ -166,18 +154,14 @@ function initSkin() {
         if(sleepIn.value === 'poor') score += 2;
         if(sleepIn.value === 'moderate') score += 1;
         
-        // Color calculation
-        // R stays high (reddish), G and B drop as damage increases
         const r = 230;
         const g = 180 - (score * 25);
         const b = 150 - (score * 25);
         visual.style.background = `rgb(${r},${g},${b})`;
         
-        // Age Text
-        const age = 20 + Math.floor(score * 3); // Base age 20
+        const age = 20 + Math.floor(score * 3);
         document.querySelector('#current-age span').textContent = age + ' yrs';
 
-        // Result Text
         if(score < 2) {
             result.textContent = "✓ Skin is protected. Stable epigenetics.";
             result.style.borderLeftColor = "#22c55e";
@@ -206,11 +190,9 @@ function initAging() {
     const result = document.getElementById('aging-result');
 
     function update() {
-        // Calculate average lifestyle score (0-100)
         const vals = Array.from(inputs).map(i => parseInt(i.value));
         const avg = vals.reduce((a,b)=>a+b,0) / 3;
         
-        // Update badges (re-using the badge IDs)
         document.getElementById('sleep-reg-value').textContent = vals[0]+'%';
         document.getElementById('training-value').textContent = vals[1]+'%';
         document.getElementById('stress-mgmt-value').textContent = vals[2]+'%';
@@ -218,24 +200,21 @@ function initAging() {
         const chrono = parseInt(ageIn.value);
         chronoDisplay.textContent = chrono;
 
-        // Calculate Bio Age Diff
         let diff = 0;
-        if(avg > 80) diff = -5;       // Very healthy = younger
+        if(avg > 80) diff = -5;
         else if(avg > 60) diff = -2;
-        else if(avg < 30) diff = 8;   // Unhealthy = older
+        else if(avg < 30) diff = 8;
         else if(avg < 50) diff = 4;
         
         const bio = chrono + diff;
         bioDisplay.textContent = bio;
         
-        // Visual Rotation (0 to 100 years = 0 to 360 deg)
         const bioRot = (bio / 100) * 360;
         const chronoRot = (chrono / 100) * 360;
         
         bioHand.style.transform = `translateX(-50%) rotate(${bioRot}deg)`;
         chronoHand.style.transform = `translateX(-50%) rotate(${chronoRot}deg)`;
         
-        // Diff Text
         if (diff > 0) {
             diffDisplay.textContent = `+${diff} years (Accelerated Aging)`;
             diffDisplay.style.color = "#ef4444";
